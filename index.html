@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUCLEUS ACADEMY — Science Coaching Classes 7–12</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg: #04060F;
+  --bg2: #080D1E;
+  --bg3: #0D1328;
+  --blue: #2563FF;
+  --cyan: #00D4FF;
+  --green: #00FFB2;
+  --orange: #FF7A00;
+  --pink: #FF2D78;
+  --white: #EEF2FF;
+  --dim: rgba(238,242,255,0.55);
+  --border: rgba(37,99,255,0.18);
+  --glow-blue: rgba(37,99,255,0.3);
+  --glow-cyan: rgba(0,212,255,0.25);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Outfit',sans-serif;overflow-x:hidden}
+
+/* ── CANVAS STARS ── */
+#starCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.7}
+
+/* ── CUSTOM CURSOR ── */
+.cur{position:fixed;width:10px;height:10px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:99999;transition:transform .1s}
+.cur-r{position:fixed;width:34px;height:34px;border:1px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:99998;transition:all .15s ease}
+.cur.big{transform:scale(3);background:var(--blue)}
+.cur-r.big{width:56px;height:56px;border-color:var(--blue)}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 64px;
+  background:rgba(4,6,15,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:padding .3s;
+}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-atom{
+  width:44px;height:44px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.logo-atom .nucleus{
+  width:14px;height:14px;background:var(--cyan);border-radius:50%;
+  box-shadow:0 0 12px var(--cyan),0 0 24px var(--glow-cyan);
+  animation:nucleusPulse 2s infinite;
+}
+@keyframes nucleusPulse{0%,100%{box-shadow:0 0 12px var(--cyan),0 0 24px var(--glow-cyan)}50%{box-shadow:0 0 20px var(--cyan),0 0 40px var(--glow-cyan)}}
+.logo-atom .orbit{
+  position:absolute;border:1px solid rgba(0,212,255,.45);
+  border-radius:50%;
+}
+.logo-atom .o1{width:38px;height:38px;animation:spin1 4s linear infinite}
+.logo-atom .o2{width:38px;height:38px;transform:rotate(60deg);animation:spin2 5s linear infinite}
+.logo-atom .o3{width:38px;height:38px;transform:rotate(-60deg);animation:spin1 6s linear infinite reverse}
+.logo-atom .e{width:5px;height:5px;background:var(--blue);border-radius:50%;position:absolute;top:-2.5px;left:50%;transform:translateX(-50%)}
+@keyframes spin1{to{transform:rotate(360deg)}}
+@keyframes spin2{to{transform:rotate(360deg) rotate(60deg)}}
+.logo-text span:first-child{display:block;font-size:22px;font-weight:800;letter-spacing:2px;color:var(--white)}
+.logo-text span:last-child{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--cyan)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;letter-spacing:.5px;color:var(--dim);text-decoration:none;position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--cyan);transition:width .3s}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-enroll{
+  font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;padding:11px 26px;border:none;border-radius:4px;cursor:pointer;
+  text-decoration:none;display:inline-block;
+  box-shadow:0 4px 20px var(--glow-blue);
+  transition:all .3s;
+}
+.nav-enroll:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--glow-blue)}
+
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;z-index:1;
+  padding:120px 32px 80px;
+}
+.hero-glow{
+  position:absolute;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,255,.18) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:breathe 4s ease-in-out infinite;
+}
+.hero-glow2{
+  position:absolute;
+  width:400px;height:400px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,212,255,.1) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:breathe 3s ease-in-out infinite reverse;
+}
+@keyframes breathe{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.15)}}
+
+/* Floating molecules */
+.molecule{position:absolute;pointer-events:none;opacity:.18}
+.molecule svg{filter:drop-shadow(0 0 6px var(--cyan))}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,212,255,.08);
+  border:1px solid rgba(0,212,255,.25);
+  padding:8px 20px;border-radius:50px;
+  font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:28px;
+  animation:fadeUp .8s ease both;
+}
+.hero-badge i{font-size:10px}
+.hero-title{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(52px,8vw,110px);line-height:.95;
+  margin-bottom:28px;
+  animation:fadeUp .8s .1s ease both;
+}
+.hero-title .grad{
+  background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--blue) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-title .italic{font-style:italic;color:var(--cyan);-webkit-text-fill-color:var(--cyan)}
+.hero-sub{
+  font-size:17px;font-weight:300;line-height:1.75;
+  color:var(--dim);max-width:560px;margin:0 auto 44px;
+  animation:fadeUp .8s .2s ease both;
+}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .3s ease both}
+.btn-pri{
+  font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;padding:16px 36px;border:none;border-radius:6px;cursor:pointer;
+  text-decoration:none;display:inline-block;
+  box-shadow:0 6px 28px var(--glow-blue);
+  transition:all .3s;
+}
+.btn-pri:hover{transform:translateY(-3px);box-shadow:0 12px 40px var(--glow-blue)}
+.btn-sec{
+  font-size:13px;font-weight:600;letter-spacing:1px;
+  border:1px solid rgba(255,255,255,.15);color:var(--white);
+  padding:16px 36px;border-radius:6px;background:transparent;cursor:pointer;
+  text-decoration:none;display:inline-block;transition:all .3s;
+}
+.btn-sec:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* Floating tags */
+.float-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:40px;animation:fadeUp .8s .4s ease both}
+.ftag{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  padding:6px 14px;border-radius:50px;font-size:12px;color:var(--dim);
+}
+.ftag i{color:var(--cyan);font-size:11px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── STATS ── */
+.stats-row{
+  position:relative;z-index:1;
+  display:flex;align-items:stretch;justify-content:center;
+  background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.s-item{
+  flex:1;min-width:160px;padding:32px 24px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  border-right:1px solid var(--border);
+  transition:background .3s;position:relative;overflow:hidden;
+}
+.s-item:last-child{border-right:none}
+.s-item::before{content:'';position:absolute;inset:0;background:var(--blue);opacity:0;transition:opacity .3s}
+.s-item:hover::before{opacity:.04}
+.s-num{
+  font-size:46px;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.s-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
+
+/* ── SECTION BASICS ── */
+section{padding:100px 64px;position:relative;z-index:1}
+.s-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:14px;
+}
+.s-tag::before{content:'';width:20px;height:1px;background:var(--cyan)}
+.s-head{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(38px,5vw,70px);line-height:1;margin-bottom:16px;
+}
+.s-head em{color:var(--cyan);font-style:italic}
+.s-sub{font-size:15px;font-weight:300;color:var(--dim);line-height:1.8;max-width:540px}
+
+/* ── CLASSES ── */
+.classes{background:var(--bg)}
+.class-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:60px;
+}
+.class-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:16px;padding:32px 28px;
+  position:relative;overflow:hidden;
+  cursor:pointer;transition:all .4s;
+  group:true;
+}
+.class-card::before{
+  content:'';position:absolute;inset:0;border-radius:16px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  opacity:0;transition:opacity .4s;
+}
+.class-card:hover{transform:translateY(-6px);border-color:var(--cyan);box-shadow:0 20px 50px rgba(37,99,255,.2)}
+.class-card:hover::before{opacity:.06}
+.cc-icon{
+  width:52px;height:52px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:20px;
+  position:relative;z-index:1;flex-shrink:0;
+}
+.cc-grade{
+  position:absolute;top:20px;right:20px;z-index:1;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:700;letter-spacing:1px;
+  background:rgba(37,99,255,.15);border:1px solid rgba(37,99,255,.3);
+  color:var(--cyan);padding:4px 10px;border-radius:50px;
+}
+.cc-name{font-size:20px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cc-desc{font-size:13px;color:var(--dim);line-height:1.7;position:relative;z-index:1}
+.cc-topics{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;position:relative;z-index:1;
+}
+.cc-topic{
+  font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  padding:4px 10px;border-radius:50px;color:var(--dim);
+}
+
+/* Subject cards row */
+.subjects{background:var(--bg2)}
+.sub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:56px}
+.sub-card{
+  padding:28px 22px;border-radius:12px;
+  border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+  transition:all .3s;cursor:default;
+  position:relative;overflow:hidden;
+}
+.sub-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:2px;background:var(--grad,linear-gradient(90deg,var(--cyan),var(--blue)));
+  transform:scaleX(0);transform-origin:left;transition:transform .4s;
+}
+.sub-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(37,99,255,.15)}
+.sub-card:hover::after{transform:scaleX(1)}
+.sub-icon{font-size:30px}
+.sub-name{font-size:16px;font-weight:700}
+.sub-info{font-size:12px;color:var(--dim);line-height:1.6}
+
+/* ── WHY US ── */
+.why{background:var(--bg)}
+.why-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.why-visual{
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.orbit-demo{
+  position:relative;width:320px;height:320px;
+  display:flex;align-items:center;justify-content:center;
+}
+.orbit-demo .center-atom{
+  width:80px;height:80px;background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:32px;box-shadow:0 0 40px var(--glow-cyan),0 0 80px var(--glow-blue);
+  animation:nucleusPulse 2s infinite;z-index:2;position:relative;
+}
+.orbit-ring{
+  position:absolute;border:1px dashed rgba(0,212,255,.3);
+  border-radius:50%;display:flex;align-items:flex-start;justify-content:center;
+}
+.orbit-ring .orb-planet{
+  width:36px;height:36px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:14px;margin-top:-18px;font-weight:700;
+  box-shadow:0 4px 16px rgba(0,0,0,.5);
+}
+.r1{width:140px;height:140px;animation:spin1 8s linear infinite}
+.r2{width:220px;height:220px;animation:spin1 14s linear infinite reverse}
+.r3{width:310px;height:310px;animation:spin1 20s linear infinite}
+.why-points{display:flex;flex-direction:column;gap:24px;margin-top:40px}
+.wp{
+  display:flex;gap:18px;padding:20px;
+  background:var(--bg2);border-radius:12px;
+  border:1px solid var(--border);
+  transition:all .3s;
+}
+.wp:hover{border-color:var(--cyan);background:rgba(37,99,255,.06)}
+.wp-icon{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.wp h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.wp p{font-size:13px;color:var(--dim);line-height:1.6}
+
+/* ── TEACHERS ── */
+.teachers{background:var(--bg2)}
+.teacher-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:60px}
+.tc{
+  background:var(--bg3);border-radius:16px;
+  border:1px solid var(--border);overflow:hidden;
+  transition:all .4s;
+}
+.tc:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(37,99,255,.15);border-color:var(--cyan)}
+.tc-img{
+  height:220px;overflow:hidden;position:relative;
+}
+.tc-img img{width:100%;height:100%;object-fit:cover;object-position:top;filter:saturate(0.7);transition:all .5s}
+.tc:hover .tc-img img{filter:saturate(1);transform:scale(1.04)}
+.tc-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 60%,var(--bg3));
+}
+.tc-body{padding:20px}
+.tc-name{font-size:18px;font-weight:800;margin-bottom:2px}
+.tc-sub{
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:10px;
+}
+.tc-bio{font-size:12px;color:var(--dim);line-height:1.6}
+.tc-exp{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);
+  padding:4px 12px;border-radius:50px;font-size:11px;font-weight:600;
+  color:var(--cyan);margin-top:12px;
+}
+
+/* ── RESULTS ── */
+.results{background:var(--bg)}
+.results-banner{
+  background:linear-gradient(135deg,rgba(37,99,255,.15),rgba(0,212,255,.08));
+  border:1px solid var(--border);border-radius:20px;
+  padding:48px;margin-top:56px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:32px;
+}
+.rb-item{text-align:center}
+.rb-num{
+  font-size:58px;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.rb-label{font-size:13px;font-weight:500;color:var(--dim);margin-top:6px}
+.testimonials{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px;margin-top:40px;
+}
+.tcard{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:14px;padding:28px;
+  transition:all .3s;
+}
+.tcard:hover{border-color:var(--blue);transform:translateY(-3px)}
+.tcard-text{font-size:14px;color:var(--dim);line-height:1.75;font-style:italic;margin-bottom:20px}
+.tcard-text::before{content:'"';font-size:36px;font-family:'DM Serif Display',serif;color:var(--cyan);line-height:0;vertical-align:-14px;margin-right:4px}
+.tcard-author{display:flex;align-items:center;gap:12px}
+.t-av{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:15px;flex-shrink:0;
+}
+.t-name{font-size:14px;font-weight:700}
+.t-info{font-size:11px;color:var(--cyan)}
+.stars{color:#FFB800;font-size:11px;margin-bottom:3px}
+
+/* ── SCHEDULE ── */
+.schedule{background:var(--bg2)}
+.sched-table{
+  width:100%;border-collapse:collapse;margin-top:56px;
+  border-radius:16px;overflow:hidden;border:1px solid var(--border);
+}
+.sched-table th{
+  background:linear-gradient(135deg,var(--blue),rgba(37,99,255,.6));
+  padding:16px 20px;text-align:left;
+  font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+}
+.sched-table td{
+  padding:16px 20px;font-size:13px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.sched-table tr:hover td{background:rgba(37,99,255,.05)}
+.sched-table tr:last-child td{border-bottom:none}
+.tag-pill{
+  display:inline-block;padding:3px 10px;border-radius:50px;
+  font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+}
+.tag-jee{background:rgba(255,122,0,.15);color:var(--orange);border:1px solid rgba(255,122,0,.3)}
+.tag-neet{background:rgba(0,255,178,.1);color:var(--green);border:1px solid rgba(0,255,178,.25)}
+.tag-board{background:rgba(37,99,255,.12);color:var(--cyan);border:1px solid rgba(37,99,255,.3)}
+.tag-foundation{background:rgba(255,45,120,.1);color:var(--pink);border:1px solid rgba(255,45,120,.25)}
+
+/* ── CONTACT + MAP ── */
+.contact{background:var(--bg)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.contact-info-item{
+  display:flex;gap:18px;align-items:flex-start;
+  padding:20px;background:var(--bg2);border-radius:12px;
+  border:1px solid var(--border);margin-bottom:16px;
+  transition:border-color .3s;
+}
+.contact-info-item:hover{border-color:var(--cyan)}
+.ci-icon{
+  width:44px;height:44px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.ci-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:3px}
+.ci-val{font-size:14px;color:var(--white)}
+.map-wrap{
+  border-radius:16px;overflow:hidden;height:340px;
+  border:1px solid var(--border);filter:saturate(.5) brightness(.8);
+  transition:filter .4s;position:relative;
+}
+.map-wrap:hover{filter:saturate(.9) brightness(1)}
+.map-wrap iframe{width:100%;height:100%;border:none}
+.map-wrap .mpin{
+  position:absolute;top:16px;left:16px;z-index:2;
+  background:var(--blue);padding:8px 16px;border-radius:6px;
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  pointer-events:none;box-shadow:0 4px 16px var(--glow-blue);
+}
+
+/* FORM */
+.enroll-form{margin-top:40px}
+.enroll-form h3{
+  font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:6px;
+}
+.enroll-form p{font-size:13px;color:var(--dim);margin-bottom:28px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.fg label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.fg input,.fg select,.fg textarea{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--white);padding:12px 16px;border-radius:8px;
+  font-family:'Outfit',sans-serif;font-size:14px;outline:none;
+  transition:all .3s;
+}
+.fg select option{background:var(--bg2)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:var(--cyan);background:rgba(0,212,255,.05);
+  box-shadow:0 0 0 3px rgba(0,212,255,.1);
+}
+.fg textarea{min-height:80px;resize:vertical}
+.fsub{
+  width:100%;padding:15px;margin-top:8px;
+  font-family:'Outfit',sans-serif;
+  font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;border:none;border-radius:8px;cursor:pointer;
+  box-shadow:0 6px 24px var(--glow-blue);
+  transition:all .3s;
+}
+.fsub:hover{transform:translateY(-2px);box-shadow:0 12px 36px var(--glow-blue)}
+
+/* ── SOCIAL ── */
+.social-strip{
+  background:var(--bg2);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:28px 64px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
+}
+.soc-label{font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--dim)}
+.soc-icons{display:flex;gap:12px}
+.soc-icon{
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:var(--dim);text-decoration:none;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.soc-icon::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  transform:scale(0);transition:transform .3s;
+}
+.soc-icon i{position:relative;z-index:1}
+.soc-icon:hover::before{transform:scale(1)}
+.soc-icon:hover{color:#fff;border-color:var(--blue)}
+
+/* ── FOOTER ── */
+footer{
+  background:rgba(4,6,15,.98);
+  padding:60px 64px;border-top:1px solid var(--border);
+  position:relative;z-index:1;
+}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:44px;
+}
+.footer-brand p{font-size:13px;color:var(--dim);line-height:1.8;margin-top:14px;max-width:280px}
+.fc h4{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+.fc ul{list-style:none}
+.fc li{margin-bottom:9px}
+.fc a{font-size:13px;color:var(--dim);text-decoration:none;transition:color .2s}
+.fc a:hover{color:var(--white)}
+.footer-bot{
+  padding-top:24px;border-top:1px solid rgba(255,255,255,.05);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-bot p{font-size:12px;color:var(--dim)}
+.footer-bot span{color:var(--cyan)}
+
+/* ── CHATBOT ── */
+.chatbot-btn{
+  position:fixed;bottom:32px;right:32px;z-index:5000;
+  width:62px;height:62px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;color:#fff;
+  box-shadow:0 6px 30px var(--glow-blue);
+  animation:chatGlow 2.5s infinite;
+  transition:transform .3s;
+}
+.chatbot-btn:hover{transform:scale(1.1)}
+@keyframes chatGlow{
+  0%,100%{box-shadow:0 6px 30px var(--glow-blue)}
+  50%{box-shadow:0 6px 50px rgba(0,212,255,.5),0 0 0 8px rgba(37,99,255,.12)}
+}
+.chat-dot{
+  position:absolute;top:2px;right:2px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--green);border:2px solid var(--bg);
+  font-size:9px;font-weight:700;color:#000;
+  display:flex;align-items:center;justify-content:center;
+}
+.chatwin{
+  position:fixed;bottom:108px;right:32px;z-index:4999;
+  width:370px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  display:flex;flex-direction:column;
+  box-shadow:0 24px 64px rgba(0,0,0,.8),0 0 0 1px rgba(37,99,255,.1);
+  transform:translateY(16px) scale(.95);opacity:0;pointer-events:none;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);overflow:hidden;
+}
+.chatwin.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all}
+.chathead{
+  background:linear-gradient(135deg,var(--blue),rgba(0,212,255,.8));
+  padding:16px 20px;display:flex;align-items:center;gap:12px;
+}
+.chat-av{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.chat-hi h4{font-size:16px;font-weight:800;letter-spacing:.5px}
+.chat-hi p{font-size:11px;opacity:.8}
+.chat-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;opacity:.8}
+.dot-green{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.chatbody{
+  padding:16px;display:flex;flex-direction:column;gap:10px;
+  max-height:320px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--blue) transparent;
+}
+.chatbody::-webkit-scrollbar{width:3px}
+.chatbody::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px}
+.cmsg{display:flex;gap:8px;align-items:flex-end;max-width:88%}
+.cmsg.b{align-self:flex-start}
+.cmsg.u{align-self:flex-end;flex-direction:row-reverse}
+.cav{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.cbub{padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.5}
+.cmsg.b .cbub{background:var(--bg3);border:1px solid var(--border);color:var(--white);border-radius:4px 12px 12px 12px}
+.cmsg.u .cbub{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border-radius:12px 12px 4px 12px}
+.chat-chips{padding:8px 16px 4px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-size:11px;font-weight:600;letter-spacing:.5px;
+  border:1px solid rgba(0,212,255,.3);color:var(--cyan);
+  background:rgba(0,212,255,.06);padding:5px 12px;border-radius:50px;cursor:pointer;
+  transition:all .2s;
+}
+.chip:hover{background:rgba(0,212,255,.15);border-color:var(--cyan)}
+.chat-inp-area{
+  padding:12px 14px;border-top:1px solid rgba(255,255,255,.06);
+  display:flex;gap:8px;align-items:center;
+}
+.chat-inp{
+  flex:1;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--white);padding:10px 14px;border-radius:8px;
+  font-family:'Outfit',sans-serif;font-size:13px;outline:none;
+  transition:border-color .3s;
+}
+.chat-inp:focus{border-color:var(--cyan)}
+.chat-go{
+  width:38px;height:38px;border-radius:8px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#fff;transition:transform .2s;
+}
+.chat-go:hover{transform:scale(1.08)}
+
+/* Reveal */
+.rev{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+.rev.in{opacity:1;transform:translateY(0)}
+
+/* Responsive */
+@media(max-width:960px){
+  nav{padding:14px 24px}
+  .nav-links{display:none}
+  section{padding:70px 24px}
+  .class-grid{grid-template-columns:1fr 1fr}
+  .why-inner{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .social-strip{padding:24px}
+  footer{padding:40px 24px}
+  .chatwin{width:320px;right:16px}
+  .frow{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .class-grid{grid-template-columns:1fr}
+  .results-banner{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-atom">
+      <div class="nucleus"></div>
+      <div class="orbit o1"><div class="e"></div></div>
+      <div class="orbit o2"><div class="e"></div></div>
+      <div class="orbit o3"><div class="e"></div></div>
+    </div>
+    <div class="logo-text">
+      <span>NUCLEUS</span>
+      <span>Science Academy</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#classes">Classes</a></li>
+    <li><a href="#subjects">Subjects</a></li>
+    <li><a href="#teachers">Teachers</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#contact">Enroll</a></li>
+  </ul>
+  <a href="#contact" class="nav-enroll">Free Demo Class</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <!-- Floating formula decorations -->
+  <div class="molecule" style="top:15%;left:8%;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(0,212,255,.4);animation:float1 6s ease-in-out infinite">E = mc²</div>
+  <div class="molecule" style="top:20%;right:10%;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(0,255,178,.35);animation:float2 7s ease-in-out infinite">F = ma</div>
+  <div class="molecule" style="bottom:25%;left:6%;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,122,0,.35);animation:float1 8s ease-in-out infinite 1s">H₂O → 2H + O</div>
+  <div class="molecule" style="bottom:30%;right:8%;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(37,99,255,.5);animation:float2 5s ease-in-out infinite 2s">∫ dx = x + C</div>
+  <div class="molecule" style="top:40%;left:3%;font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,45,120,.3);animation:float1 9s ease-in-out infinite 3s">DNA → RNA → Protein</div>
+
+  <style>
+    @keyframes float1{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+    @keyframes float2{0%,100%{transform:translateY(0) rotate(3deg)}50%{transform:translateY(-10px) rotate(-3deg)}}
+  </style>
+
+  <div style="position:relative;z-index:2">
+    <div class="hero-badge"><i class="fas fa-atom"></i> Classes VII to XII &nbsp;·&nbsp; JEE &nbsp;·&nbsp; NEET &nbsp;·&nbsp; Board Exams</div>
+    <h1 class="hero-title">
+      <span class="grad">Unlock the</span><br>
+      <span class="italic">Science</span><br>
+      <span class="grad">in You</span>
+    </h1>
+    <p class="hero-sub">Kolkata's most advanced science coaching centre — where curiosity becomes rank, and students become scientists, engineers, and doctors.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-pri"><i class="fas fa-flask"></i> &nbsp; Book Free Demo</a>
+      <a href="#classes" class="btn-sec">Explore Classes</a>
+    </div>
+    <div class="float-tags">
+      <div class="ftag"><i class="fas fa-microscope"></i> Physics</div>
+      <div class="ftag"><i class="fas fa-flask"></i> Chemistry</div>
+      <div class="ftag"><i class="fas fa-dna"></i> Biology</div>
+      <div class="ftag"><i class="fas fa-square-root-alt"></i> Mathematics</div>
+      <div class="ftag"><i class="fas fa-laptop-code"></i> Computer Sci</div>
+      <div class="ftag"><i class="fas fa-star"></i> JEE / NEET</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="s-item rev"><div class="s-num" data-c="2800">0</div><div class="s-label">Students Taught</div></div>
+  <div class="s-item rev"><div class="s-num" data-c="98">0</div><div class="s-label" style="white-space:nowrap">% Board Pass Rate</div></div>
+  <div class="s-item rev"><div class="s-num" data-c="340">0</div><div class="s-label">JEE / NEET Selections</div></div>
+  <div class="s-item rev"><div class="s-num" data-c="18">0</div><div class="s-label">Expert Faculty</div></div>
+  <div class="s-item rev"><div class="s-num" data-c="12">0</div><div class="s-label">Years of Excellence</div></div>
+</div>
+
+<!-- CLASSES -->
+<section class="classes" id="classes">
+  <div class="rev">
+    <div class="s-tag">Academic Programs</div>
+    <h2 class="s-head">Classes <em>VII – XII</em></h2>
+    <p class="s-sub">Structured programs for every stage — from building foundations to cracking the toughest competitive exams in India.</p>
+  </div>
+  <div class="class-grid rev">
+    <div class="class-card">
+      <div class="cc-grade">Class VII–VIII</div>
+      <div class="cc-icon" style="background:rgba(255,45,120,.12);color:var(--pink)"><i class="fas fa-seedling"></i></div>
+      <div class="cc-name">Foundation Years</div>
+      <p class="cc-desc">Build rock-solid foundations in Science & Maths. Develop problem-solving instincts early with concept-first approach.</p>
+      <div class="cc-topics"><span class="cc-topic">Basic Physics</span><span class="cc-topic">Chemistry Intro</span><span class="cc-topic">Life Science</span><span class="cc-topic">Algebra</span></div>
+    </div>
+    <div class="class-card">
+      <div class="cc-grade">Class IX–X</div>
+      <div class="cc-icon" style="background:rgba(0,212,255,.1);color:var(--cyan)"><i class="fas fa-atom"></i></div>
+      <div class="cc-name">Board Preparation</div>
+      <p class="cc-desc">CBSE / ICSE / WB Board focused. Comprehensive chapter coverage, model tests, and NCERT deep-dives for 90%+ scores.</p>
+      <div class="cc-topics"><span class="cc-topic">CBSE</span><span class="cc-topic">ICSE</span><span class="cc-topic">WB Board</span><span class="cc-topic">Olympiad</span></div>
+    </div>
+    <div class="class-card">
+      <div class="cc-grade">Class XI–XII</div>
+      <div class="cc-icon" style="background:rgba(37,99,255,.12);color:var(--blue)"><i class="fas fa-rocket"></i></div>
+      <div class="cc-name">Senior Science</div>
+      <p class="cc-desc">PCB / PCM / PCMB streams. Board + competitive exam dual preparation with weekly mock tests and detailed analytics.</p>
+      <div class="cc-topics"><span class="cc-topic">PCM</span><span class="cc-topic">PCB</span><span class="cc-topic">PCMB</span><span class="cc-topic">Board+Comp</span></div>
+    </div>
+    <div class="class-card">
+      <div class="cc-grade">JEE Prep</div>
+      <div class="cc-icon" style="background:rgba(255,122,0,.12);color:var(--orange)"><i class="fas fa-cogs"></i></div>
+      <div class="cc-name">JEE Mains & Advanced</div>
+      <p class="cc-desc">Elite engineering entrance coaching. Problem-solving marathons, previous year analysis, and AIR-focused strategy sessions.</p>
+      <div class="cc-topics"><span class="cc-topic">JEE Mains</span><span class="cc-topic">JEE Advanced</span><span class="cc-topic">WBJEE</span><span class="cc-topic">BITSAT</span></div>
+    </div>
+    <div class="class-card">
+      <div class="cc-grade">NEET Prep</div>
+      <div class="cc-icon" style="background:rgba(0,255,178,.1);color:var(--green)"><i class="fas fa-heartbeat"></i></div>
+      <div class="cc-name">NEET / Medical</div>
+      <p class="cc-desc">Focused Biology, Physics and Chemistry for NEET aspirants. Diagram-based revision, NCERT mastery, and full-length tests.</p>
+      <div class="cc-topics"><span class="cc-topic">NEET UG</span><span class="cc-topic">AIIMS</span><span class="cc-topic">WBJEE Med</span><span class="cc-topic">JIPMER</span></div>
+    </div>
+    <div class="class-card">
+      <div class="cc-grade">Olympiad</div>
+      <div class="cc-icon" style="background:rgba(255,45,120,.1);color:var(--pink)"><i class="fas fa-trophy"></i></div>
+      <div class="cc-name">Olympiad & NTSE</div>
+      <p class="cc-desc">Prepare for NSO, NSEP, NSEC, NTSE and International Science Olympiads with advanced problem sets and mentorship.</p>
+      <div class="cc-topics"><span class="cc-topic">NSO</span><span class="cc-topic">NTSE</span><span class="cc-topic">NSEP</span><span class="cc-topic">KVPY</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBJECTS -->
+<section class="subjects" id="subjects">
+  <div class="rev" style="text-align:center">
+    <div class="s-tag" style="justify-content:center">What We Teach</div>
+    <h2 class="s-head">Core <em>Subjects</em></h2>
+  </div>
+  <div class="sub-grid rev">
+    <div class="sub-card" style="--grad:linear-gradient(90deg,#2563FF,#00D4FF)">
+      <div class="sub-icon">⚛️</div>
+      <div class="sub-name">Physics</div>
+      <div class="sub-info">Mechanics, Waves, Optics, Electricity, Thermodynamics, Modern Physics</div>
+    </div>
+    <div class="sub-card" style="--grad:linear-gradient(90deg,#00FFB2,#2563FF)">
+      <div class="sub-icon">🧪</div>
+      <div class="sub-name">Chemistry</div>
+      <div class="sub-info">Physical, Organic & Inorganic Chemistry. Reaction mechanisms, equilibria, and lab skills</div>
+    </div>
+    <div class="sub-card" style="--grad:linear-gradient(90deg,#00FFB2,#00D4FF)">
+      <div class="sub-icon">🧬</div>
+      <div class="sub-name">Biology</div>
+      <div class="sub-info">Cell Biology, Genetics, Ecology, Plant & Animal Physiology, Evolution</div>
+    </div>
+    <div class="sub-card" style="--grad:linear-gradient(90deg,#FF7A00,#FF2D78)">
+      <div class="sub-icon">📐</div>
+      <div class="sub-name">Mathematics</div>
+      <div class="sub-info">Algebra, Calculus, Coordinate Geometry, Statistics, Probability, Trigonometry</div>
+    </div>
+    <div class="sub-card" style="--grad:linear-gradient(90deg,#FF2D78,#2563FF)">
+      <div class="sub-icon">💻</div>
+      <div class="sub-name">Computer Sci</div>
+      <div class="sub-info">Python, C++, Data Structures, Algorithms, DBMS, Networking basics</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="why-inner">
+    <div class="why-visual rev">
+      <div class="orbit-demo">
+        <div class="orbit-ring r1"><div class="orb-planet">📚</div></div>
+        <div class="orbit-ring r2"><div class="orb-planet">🏆</div></div>
+        <div class="orbit-ring r3"><div class="orb-planet">🎯</div></div>
+        <div class="center-atom">🔬</div>
+      </div>
+    </div>
+    <div class="rev">
+      <div class="s-tag">Why Choose Us</div>
+      <h2 class="s-head">Where <em>Rank</em><br>Meets Reason</h2>
+      <p class="s-sub" style="margin-bottom:0">Not rote, not rush — we build genuine scientific thinking that lasts beyond any exam.</p>
+      <div class="why-points">
+        <div class="wp">
+          <div class="wp-icon" style="background:rgba(37,99,255,.15);color:var(--cyan)"><i class="fas fa-chalkboard-teacher"></i></div>
+          <div><h4>IIT / NIT Alumnus Faculty</h4><p>All teachers are from IITs, NITs or top medical colleges with 8–20 years teaching experience.</p></div>
+        </div>
+        <div class="wp">
+          <div class="wp-icon" style="background:rgba(0,255,178,.1);color:var(--green)"><i class="fas fa-flask"></i></div>
+          <div><h4>Live Lab Sessions</h4><p>Hands-on laboratory experiments weekly so concepts become unforgettable visual memories.</p></div>
+        </div>
+        <div class="wp">
+          <div class="wp-icon" style="background:rgba(255,122,0,.1);color:var(--orange)"><i class="fas fa-chart-bar"></i></div>
+          <div><h4>Weekly Test Analytics</h4><p>Personalised performance dashboard tracks every student's weak points and progress in real time.</p></div>
+        </div>
+        <div class="wp">
+          <div class="wp-icon" style="background:rgba(255,45,120,.1);color:var(--pink)"><i class="fas fa-users"></i></div>
+          <div><h4>Small Batch Size (Max 18)</h4><p>Intimate classrooms ensure every student gets personal attention and doubt clearing every session.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHERS -->
+<section class="teachers" id="teachers">
+  <div class="rev" style="text-align:center">
+    <div class="s-tag" style="justify-content:center">Expert Faculty</div>
+    <h2 class="s-head">Meet Your <em>Mentors</em></h2>
+  </div>
+  <div class="teacher-grid rev">
+    <div class="tc">
+      <div class="tc-img"><img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&q=80" alt="Teacher"></div>
+      <div class="tc-body">
+        <div class="tc-name">Dr. Subrata Roy</div>
+        <div class="tc-sub">Physics — IIT Kharagpur</div>
+        <p class="tc-bio">Former JEE faculty at FIITJEE. Specialist in Mechanics & Electrodynamics with 18 years of experience.</p>
+        <div class="tc-exp"><i class="fas fa-star"></i> 18 Years Experience</div>
+      </div>
+    </div>
+    <div class="tc">
+      <div class="tc-img"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Teacher"></div>
+      <div class="tc-body">
+        <div class="tc-name">Ms. Pritha Ghosh</div>
+        <div class="tc-sub">Chemistry — IIT Bombay</div>
+        <p class="tc-bio">Organic Chemistry specialist. Known for making reaction mechanisms intuitive and exam-ready for JEE & NEET.</p>
+        <div class="tc-exp"><i class="fas fa-star"></i> 12 Years Experience</div>
+      </div>
+    </div>
+    <div class="tc">
+      <div class="tc-img"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" alt="Teacher"></div>
+      <div class="tc-body">
+        <div class="tc-name">Mr. Arindam Bose</div>
+        <div class="tc-sub">Mathematics — IIT Delhi</div>
+        <p class="tc-bio">JEE Advanced Math topper-maker. Coaches students on pattern recognition and speed with precision.</p>
+        <div class="tc-exp"><i class="fas fa-star"></i> 15 Years Experience</div>
+      </div>
+    </div>
+    <div class="tc">
+      <div class="tc-img"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" alt="Teacher"></div>
+      <div class="tc-body">
+        <div class="tc-name">Dr. Moumita Sen</div>
+        <div class="tc-sub">Biology — AIIMS Kolkata</div>
+        <p class="tc-bio">NEET Biology specialist with a passion for human physiology and genetics. 200+ NEET selections in 10 years.</p>
+        <div class="tc-exp"><i class="fas fa-star"></i> 10 Years Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results" id="results">
+  <div class="rev">
+    <div class="s-tag">Track Record</div>
+    <h2 class="s-head">Our <em>Results</em></h2>
+    <p class="s-sub">Numbers that speak for themselves — because results are the only promise we make.</p>
+  </div>
+  <div class="results-banner rev">
+    <div class="rb-item"><div class="rb-num" data-c="340">0</div><div class="rb-label">JEE / NEET Selections (2024)</div></div>
+    <div class="rb-item"><div class="rb-num" data-c="98">0</div><div class="rb-label" style="white-space:nowrap">% Board Pass Rate</div></div>
+    <div class="rb-item"><div class="rb-num" data-c="67">0</div><div class="rb-label">Students Scored 90%+ Boards</div></div>
+    <div class="rb-item"><div class="rb-num" data-c="42">0</div><div class="rb-label">Olympiad Medals</div></div>
+  </div>
+  <div class="testimonials rev">
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p class="tcard-text">The Physics classes at Nucleus helped me crack JEE Advanced with AIR 312. The teaching method here is unlike anything else in Kolkata.</p>
+      <div class="tcard-author"><div class="t-av">R</div><div><div class="t-name">Rahul Biswas</div><div class="t-info">JEE Advanced AIR 312 · IIT Bombay</div></div></div>
+    </div>
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p class="tcard-text">I scored 720/720 in NEET after joining Nucleus in Class XI. Dr. Moumita's Biology classes made the difference — visual, clear and deep.</p>
+      <div class="tcard-author"><div class="t-av">P</div><div><div class="t-name">Puja Sarkar</div><div class="t-info">NEET 720/720 · AIIMS Delhi</div></div></div>
+    </div>
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p class="tcard-text">Started from Class VIII at Nucleus. Went on to score 96% in Boards and qualify WBJEE in first attempt. Grateful for the foundation built here.</p>
+      <div class="tcard-author"><div class="t-av">S</div><div><div class="t-name">Sourav Dey</div><div class="t-info">WBJEE Rank 88 · Jadavpur University</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule" id="schedule">
+  <div class="rev" style="text-align:center">
+    <div class="s-tag" style="justify-content:center">Class Timetable</div>
+    <h2 class="s-head">Weekly <em>Schedule</em></h2>
+  </div>
+  <div class="rev" style="overflow-x:auto">
+    <table class="sched-table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Time</th>
+          <th>Class / Batch</th>
+          <th>Subject</th>
+          <th>Teacher</th>
+          <th>Mode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Monday</td><td>4:00 – 6:00 PM</td><td>Class XI–XII</td><td>Physics (Mechanics)</td><td>Dr. Subrata Roy</td><td><span class="tag-pill tag-jee">JEE</span></td></tr>
+        <tr><td>Monday</td><td>6:30 – 8:30 PM</td><td>Class IX–X</td><td>Chemistry + Math</td><td>Ms. Pritha Ghosh</td><td><span class="tag-pill tag-board">Board</span></td></tr>
+        <tr><td>Tuesday</td><td>4:00 – 6:00 PM</td><td>Class XI–XII</td><td>Biology (Physiology)</td><td>Dr. Moumita Sen</td><td><span class="tag-pill tag-neet">NEET</span></td></tr>
+        <tr><td>Tuesday</td><td>6:30 – 8:00 PM</td><td>Class VII–VIII</td><td>Science Foundation</td><td>Mr. Arindam Bose</td><td><span class="tag-pill tag-foundation">Foundation</span></td></tr>
+        <tr><td>Wednesday</td><td>4:00 – 6:00 PM</td><td>Class XI–XII</td><td>Mathematics (Calculus)</td><td>Mr. Arindam Bose</td><td><span class="tag-pill tag-jee">JEE</span></td></tr>
+        <tr><td>Thursday</td><td>4:00 – 6:30 PM</td><td>Class XI–XII</td><td>Chemistry (Organic)</td><td>Ms. Pritha Ghosh</td><td><span class="tag-pill tag-neet">NEET</span></td></tr>
+        <tr><td>Friday</td><td>4:00 – 7:00 PM</td><td>All Classes</td><td>Weekly Mock Test</td><td>All Faculty</td><td><span class="tag-pill tag-board">Test</span></td></tr>
+        <tr><td>Saturday</td><td>10:00 AM – 1:00 PM</td><td>Class IX–XII</td><td>Doubt Clearing Session</td><td>All Faculty</td><td><span class="tag-pill tag-foundation">Open</span></td></tr>
+        <tr><td>Sunday</td><td>10:00 AM – 12:30 PM</td><td>Olympiad Batch</td><td>Advanced Problem Solving</td><td>Dr. Subrata Roy</td><td><span class="tag-pill tag-jee">Olympiad</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SOCIAL STRIP -->
+<div class="social-strip">
+  <div class="soc-label">Connect With Us</div>
+  <div class="soc-icons">
+    <a href="#" class="soc-icon"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="soc-icon"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="soc-icon"><i class="fab fa-youtube"></i></a>
+    <a href="#" class="soc-icon"><i class="fab fa-twitter"></i></a>
+    <a href="#" class="soc-icon"><i class="fab fa-whatsapp"></i></a>
+    <a href="#" class="soc-icon"><i class="fab fa-telegram"></i></a>
+  </div>
+  <div class="soc-label">#NucleusAcademy</div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="s-tag rev">Visit & Enroll</div>
+      <h2 class="s-head rev">Start Your <em>Journey</em></h2>
+      <div class="rev">
+        <div class="contact-info-item">
+          <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div><div class="ci-label">Address</div><div class="ci-val">34 Ballygunge Circular Road<br>Kolkata, West Bengal 700 019</div></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="ci-icon"><i class="fas fa-phone-alt"></i></div>
+          <div><div class="ci-label">Phone / WhatsApp</div><div class="ci-val">+91 98300 12345</div></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+          <div><div class="ci-label">Email</div><div class="ci-val">admissions@nucleusacademy.in</div></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="ci-icon"><i class="fas fa-clock"></i></div>
+          <div><div class="ci-label">Office Hours</div><div class="ci-val">Mon–Sat: 9:00 AM – 9:00 PM<br>Sunday: 10:00 AM – 2:00 PM</div></div>
+        </div>
+      </div>
+      <div class="map-wrap rev">
+        <div class="mpin">📍 Nucleus Academy</div>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3685.2!2d88.3639!3d22.5265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a0277c0!2sBallygunge%20Circular%20Rd%2C%20Kolkata%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1610000000000!5m2!1sen!2sin"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="enroll-form rev">
+      <h3>Enroll Now</h3>
+      <p>Fill this form and we'll call you within 2 hours to schedule your FREE demo class.</p>
+      <div class="frow">
+        <div class="fg"><label>Student Name</label><input type="text" placeholder="Full name"></div>
+        <div class="fg"><label>Parent Name</label><input type="text" placeholder="Parent / guardian"></div>
+      </div>
+      <div class="fg"><label>Phone / WhatsApp</label><input type="tel" placeholder="+91 98300 00000"></div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="student@email.com"></div>
+      <div class="frow">
+        <div class="fg">
+          <label>Current Class</label>
+          <select>
+            <option>Select Class</option>
+            <option>Class VII</option><option>Class VIII</option>
+            <option>Class IX</option><option>Class X</option>
+            <option>Class XI</option><option>Class XII</option>
+            <option>XII Passed (Dropper)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Stream / Goal</label>
+          <select>
+            <option>Select Stream</option>
+            <option>Science (PCM)</option><option>Science (PCB)</option>
+            <option>Science (PCMB)</option><option>Foundation</option>
+            <option>JEE Mains / Advanced</option><option>NEET</option>
+            <option>Olympiad / NTSE</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Board</label>
+        <select>
+          <option>Select Board</option>
+          <option>CBSE</option><option>ICSE</option><option>WB Board</option><option>Other</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Message (Optional)</label>
+        <textarea placeholder="Any specific doubts, preferred batch timing, or questions..."></textarea>
+      </div>
+      <button class="fsub" onclick="handleEnroll(this)">
+        <i class="fas fa-atom"></i> &nbsp; Book My Free Demo Class
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">
+        <div class="logo-atom">
+          <div class="nucleus"></div>
+          <div class="orbit o1"><div class="e"></div></div>
+          <div class="orbit o2"><div class="e"></div></div>
+        </div>
+        <div class="logo-text">
+          <span>NUCLEUS</span>
+          <span>Science Academy</span>
+        </div>
+      </a>
+      <p>Kolkata's premier science coaching centre for Classes VII–XII. JEE, NEET, Board, and Olympiad preparation under one roof since 2013.</p>
+    </div>
+    <div class="fc">
+      <h4>Programs</h4>
+      <ul>
+        <li><a href="#">Foundation (VII–VIII)</a></li>
+        <li><a href="#">Board Prep (IX–X)</a></li>
+        <li><a href="#">Senior Science (XI–XII)</a></li>
+        <li><a href="#">JEE Mains & Advanced</a></li>
+        <li><a href="#">NEET Preparation</a></li>
+        <li><a href="#">Olympiad / NTSE</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Subjects</h4>
+      <ul>
+        <li><a href="#">Physics</a></li>
+        <li><a href="#">Chemistry</a></li>
+        <li><a href="#">Biology</a></li>
+        <li><a href="#">Mathematics</a></li>
+        <li><a href="#">Computer Science</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Faculty</a></li>
+        <li><a href="#">Results 2024</a></li>
+        <li><a href="#">Study Material</a></li>
+        <li><a href="#">Scholarship Test</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bot">
+    <p>© 2025 Nucleus Science Academy. All rights reserved. Made with <span>♥</span> in Kolkata.</p>
+    <div class="soc-icons">
+      <a href="#" class="soc-icon" style="width:34px;height:34px;font-size:13px"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="soc-icon" style="width:34px;height:34px;font-size:13px"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" class="soc-icon" style="width:34px;height:34px;font-size:13px"><i class="fab fa-youtube"></i></a>
+      <a href="#" class="soc-icon" style="width:34px;height:34px;font-size:13px"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- CHATBOT -->
+<button class="chatbot-btn" id="chatBtn" onclick="toggleChat()">
+  <i class="fas fa-atom" id="chatIco"></i>
+  <div class="chat-dot">1</div>
+</button>
+
+<div class="chatwin" id="chatWin">
+  <div class="chathead">
+    <div class="chat-av">⚛️</div>
+    <div class="chat-hi"><h4>NUCLEUS BOT</h4><p>Admissions & Academic Assistant</p></div>
+    <div class="chat-status"><div class="dot-green"></div>Online</div>
+  </div>
+  <div class="chatbody" id="chatBody">
+    <div class="cmsg b"><div class="cav">⚛️</div><div class="cbub">👋 Hello! Welcome to <strong>Nucleus Academy</strong>! I'm your admission and academic assistant. How can I help you today?</div></div>
+    <div class="cmsg b"><div class="cav">⚛️</div><div class="cbub">Ask me about classes, fees, admission process, schedule, or book your free demo class! 🔬</div></div>
+  </div>
+  <div class="chat-chips" id="chips">
+    <div class="chip" onclick="qr('📅 Book Free Demo Class')">📅 Free Demo</div>
+    <div class="chip" onclick="qr('💰 Fees & Admission')">💰 Fees</div>
+    <div class="chip" onclick="qr('📚 Available Classes')">📚 Classes</div>
+    <div class="chip" onclick="qr('⏰ Class Schedule')">⏰ Schedule</div>
+    <div class="chip" onclick="qr('🎓 JEE & NEET Coaching')">🎓 JEE/NEET</div>
+    <div class="chip" onclick="qr('📍 Location & Contact')">📍 Location</div>
+  </div>
+  <div class="chat-inp-area">
+    <input class="chat-inp" id="cInp" placeholder="Type your question..." onkeypress="ck(event)">
+    <button class="chat-go" onclick="cs()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script>
+// ── STAR CANVAS ──
+const canvas = document.getElementById('starCanvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;stars=Array.from({length:180},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+.3,o:Math.random(),s:Math.random()*.002+.001,d:Math.random()>0.5?1:-1}))}
+resize();window.addEventListener('resize',resize);
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{
+    s.o+=s.s*s.d;
+    if(s.o>1||s.o<.1)s.d*=-1;
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(180,210,255,${s.o})`;ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+// ── CURSOR ──
+const cur=document.getElementById('cur');const curR=document.getElementById('curR');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX-5+'px';cur.style.top=e.clientY-5+'px';
+  curR.style.left=e.clientX-17+'px';curR.style.top=e.clientY-17+'px';
+});
+document.querySelectorAll('a,button,.class-card,.tc,.tcard').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.classList.add('big');curR.classList.add('big')});
+  el.addEventListener('mouseleave',()=>{cur.classList.remove('big');curR.classList.remove('big')});
+});
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.1});
+document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
+
+// ── COUNTERS ──
+function animNum(el){
+  const t=parseInt(el.getAttribute('data-c'));if(!t)return;
+  let c=0;const step=t/60;
+  const tm=setInterval(()=>{c+=step;if(c>=t){el.textContent=t.toLocaleString()+(t>90&&t<=100?'%':'+');clearInterval(tm)}else el.textContent=Math.floor(c).toLocaleString()},22);
+}
+const co=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('[data-c]').forEach(animNum);co.disconnect()}})},{threshold:.4});
+const sb=document.querySelector('.stats-row');if(sb)co.observe(sb);
+const rb=document.querySelector('.results-banner');
+const ro=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-c]').forEach(animNum);ro.disconnect()}})},{threshold:.3});
+if(rb)ro.observe(rb);
+
+// ── CHAT ──
+let open=false;
+const bots={
+  'book free demo class':`🎉 Fantastic choice! Here's how to book:\n\n1️⃣ Fill the <strong>Enrollment Form</strong> below\n2️⃣ Or call: <strong>+91 98300 12345</strong>\n3️⃣ WhatsApp us for instant reply!\n\nWe schedule your FREE demo within 24 hours. No obligation! ⚛️`,
+  'fees & admission':`💰 <strong>Approximate Fees (2025–26):</strong>\n\n• Foundation (VII–VIII): ₹2,500/month\n• Board Prep (IX–X): ₹3,500/month\n• Senior Science (XI–XII): ₹4,500/month\n• JEE / NEET Full Batch: ₹6,500/month\n\nScholarship test available! Top scorers get up to 50% fee waiver. 🏆`,
+  'available classes':`📚 <strong>Our Programs:</strong>\n\n🌱 Foundation — Class VII & VIII\n📋 Board Prep — Class IX & X (CBSE/ICSE/WB)\n🚀 Senior Science — Class XI & XII\n⚙️ JEE Mains & Advanced\n💊 NEET / Medical Entrance\n🏅 Olympiad & NTSE Batch\n\nAll with max 18 students per batch!`,
+  'class schedule':`⏰ <strong>Key Timings:</strong>\n\nMonday–Friday: 4:00 – 8:30 PM\nSaturday: Doubt Clearing 10 AM – 1 PM\nSunday: Olympiad Batch 10 AM – 12:30 PM\n\nFriday is <strong>Weekly Mock Test</strong> day for all batches! 📝`,
+  'jee & neet coaching':`🎓 <strong>JEE & NEET at Nucleus:</strong>\n\n✅ IIT/AIIMS alumnus faculty\n✅ 340 selections in 2024\n✅ Full mock test series\n✅ Previous year paper analysis\n✅ Personalised weak-point tracking\n\nNEET 2024 top scorer: <strong>720/720</strong> 🧬`,
+  'location & contact':`📍 <strong>34 Ballygunge Circular Road</strong>\nKolkata, West Bengal 700 019\n\n📞 <strong>+91 98300 12345</strong>\n📧 admissions@nucleusacademy.in\n💬 WhatsApp available 9 AM – 9 PM\n\n🕘 Mon–Sat: 9 AM – 9 PM\n🕙 Sunday: 10 AM – 2 PM`,
+};
+function toggleChat(){open=!open;document.getElementById('chatWin').classList.toggle('open',open);document.getElementById('chatIco').className=open?'fas fa-times':'fas fa-atom';document.querySelector('.chat-dot').style.display=open?'none':'flex'}
+function qr(t){
+  const k=t.replace(/[^a-z &]/gi,'').trim().toLowerCase();
+  addM(t,'u');
+  setTimeout(()=>{
+    const key=Object.keys(bots).find(b=>k.includes(b.split(' ')[0]));
+    addM(key?bots[key]:`Thanks for asking! 😊 Our team can answer that in detail.\n\n📞 <strong>+91 98300 12345</strong>\n📧 admissions@nucleusacademy.in\n\nOr scroll down to fill the enrollment form!`,'b');
+  },500);
+}
+function cs(){
+  const inp=document.getElementById('cInp');const t=inp.value.trim();if(!t)return;inp.value='';
+  addM(t,'u');
+  setTimeout(()=>{
+    const l=t.toLowerCase();let r;
+    if(l.includes('fee')||l.includes('cost')||l.includes('price')||l.includes('charge'))r=bots['fees & admission'];
+    else if(l.includes('demo')||l.includes('book')||l.includes('trial')||l.includes('join')||l.includes('admit'))r=bots['book free demo class'];
+    else if(l.includes('class')||l.includes('batch')||l.includes('program'))r=bots['available classes'];
+    else if(l.includes('schedule')||l.includes('timing')||l.includes('time')||l.includes('timetable'))r=bots['class schedule'];
+    else if(l.includes('jee')||l.includes('neet')||l.includes('medical')||l.includes('engineer'))r=bots['jee & neet coaching'];
+    else if(l.includes('location')||l.includes('address')||l.includes('contact')||l.includes('phone')||l.includes('where'))r=bots['location & contact'];
+    else if(l.includes('hi')||l.includes('hello')||l.includes('hey'))r=`Hello! 👋 Welcome to Nucleus Academy! Ask me anything about our programs, fees, schedule, or how to enroll. ⚛️`;
+    else if(l.includes('thank'))r=`You're most welcome! 😊 We look forward to helping you achieve your academic goals. Science awaits you! 🔬`;
+    else r=`Great question! For the best answer, please contact us:\n\n📞 <strong>+91 98300 12345</strong>\n💬 WhatsApp: +91 98300 12345\n📧 admissions@nucleusacademy.in\n\nOr try asking about fees, classes, schedule, or JEE/NEET!`;
+    addM(r,'b');
+  },600);
+}
+function addM(txt,type){
+  const b=document.getElementById('chatBody');
+  const d=document.createElement('div');d.className=`cmsg ${type}`;
+  d.innerHTML=type==='b'?`<div class="cav">⚛️</div><div class="cbub">${txt.replace(/\n/g,'<br>')}</div>`:`<div class="cbub">${txt}</div>`;
+  b.appendChild(d);b.scrollTop=b.scrollHeight;
+}
+function ck(e){if(e.key==='Enter')cs()}
+function handleEnroll(btn){
+  btn.innerHTML='<i class="fas fa-check-circle"></i> &nbsp; Enrollment Submitted!';
+  btn.style.background='linear-gradient(135deg,#00c853,#00e676)';
+  setTimeout(()=>{btn.innerHTML='<i class="fas fa-atom"></i> &nbsp; Book My Free Demo Class';btn.style.background=''},3500);
+}
+window.addEventListener('scroll',()=>{
+  const nav=document.querySelector('nav');
+  nav.style.background=scrollY>80?'rgba(4,6,15,.98)':'rgba(4,6,15,.85)';
+});
+</script>
+</body>
+</html>
